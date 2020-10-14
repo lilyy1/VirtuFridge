@@ -55,7 +55,7 @@ public class RecipeHttpRequest {
             recipeIngredients = getRecipe.get("ingredientLines").toString();
             System.out.println("Here's a recipe called " + recipeName + "!");
             System.out.println("Here's the recipe link for cooking directions! " + recipeLink);
-            System.out.println("You will need these ingredients.");
+ //           System.out.println("You will need these ingredients.");
             //System.out.println(recipeIngredients);
 
 
