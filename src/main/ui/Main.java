@@ -3,7 +3,7 @@ package ui;
 // runs the GUI class
 public class Main {
     public static void main(String[] args) {
-        new FridgeApp();
+        new GUI();
     }
 }
 

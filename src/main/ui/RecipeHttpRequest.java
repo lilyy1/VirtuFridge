@@ -33,7 +33,7 @@ public class RecipeHttpRequest {
             if (entity != null) {
                 // return it as a String
                 String result = EntityUtils.toString(entity);
-                parseRecipes(result);
+ //               parseRecipes(result);
 //                System.out.println("Here's a recipe called " + recipeName + "!" );
  //               System.out.println("Here's the link." + recipeLink);
             }
