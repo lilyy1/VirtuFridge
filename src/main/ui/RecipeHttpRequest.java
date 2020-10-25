@@ -17,53 +17,37 @@ import java.util.Random;
 public class RecipeHttpRequest {
 
     public final CloseableHttpClient httpClient = HttpClients.createDefault();
-    protected String recipeName;
-    protected String recipeLink;
-    protected String recipeIngredients;
 
     public String getRecipes(String foodName) throws Exception {
         URIBuilder builder = new URIBuilder("https://api.edamam.com/search");
         builder.setParameter("app_id", "4439eed1")
                 .setParameter("app_key", "34503407ac87739aeebe211e1ccafe9b")
                 .setParameter("q", foodName)
-                .setParameter("to", "5");
+                .setParameter("to", "25");
         HttpGet request = new HttpGet(builder.build());
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 // return it as a String
                 String result = EntityUtils.toString(entity);
- //               parseRecipes(result);
-//                System.out.println("Here's a recipe called " + recipeName + "!" );
- //               System.out.println("Here's the link." + recipeLink);
+                return parseRecipes(result);
             }
         }
         return null;
     }
 
     //https://stackoverflow.com/questions/45644144/using-json-simple-to-parse-an-array-of-objects-from-a-file
-    public void parseRecipes(String s) {
+    public String parseRecipes(String s) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject json = (JSONObject) parser.parse(s);
             JSONArray array = (JSONArray) json.get("hits");
-            JSONObject getRecipeNum = (JSONObject) array.get(randInt(0, 4));
+            JSONObject getRecipeNum = (JSONObject) array.get(randInt(0, 24));
             JSONObject getRecipe = (JSONObject) getRecipeNum.get("recipe");
-            recipeName = getRecipe.get("label").toString();
-//      FIX ISSUE SO RECIPE NAME CAN BE STORED AS A GLOBAL VARIABLE OR SOMETHING TO BE CALLED ABOVE!!!!!!!!!
-            recipeLink = getRecipe.get("url").toString();
-            recipeIngredients = getRecipe.get("ingredientLines").toString();
-            System.out.println("Here's a recipe called " + recipeName + "!");
-            System.out.println("Here's the recipe link for cooking directions! " + recipeLink);
- //           System.out.println("You will need these ingredients.");
-            //System.out.println(recipeIngredients);
-
-
-    //        String recipe =  ": " + link + " ingredients required: " + ingredients;
-//            System.out.println("Here is a recipe! " + name);
-//            System.out.println(link);
-
-//            return recipe; if using GUI
+            String name = getRecipe.get("label").toString();
+            String link = getRecipe.get("url").toString();
+            String recipe = name + ": " + link;
+            return recipe;
 //            System.out.println(link);
 //
 //            JSONObject getRecipeNum1 = (JSONObject) array.get(randInt(0,24));
@@ -75,9 +59,8 @@ public class RecipeHttpRequest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
- //       return null;
+        return null;
     }
-
 
     // https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java
     public static int randInt(int min, int max) {
