@@ -7,14 +7,14 @@ import java.util.*;
 // Minifridge represents a hashMap of items along with it's name, this class represents what you can do with the items
 public class MiniFridge implements Save {
 
-    protected Map<String, Item> fridge;
+    protected HashMap<String, Item> fridge;
 
     //EFFECTS: creates a new fridge
     public MiniFridge() {
         fridge = new HashMap<>();
     }
 
-    public Map<String, Item> getFridge() {
+    public HashMap<String, Item> getFridge() {
         return this.fridge;
     }
 
@@ -52,6 +52,9 @@ public class MiniFridge implements Save {
     @Override
     public void save(PrintWriter printWriter) {
         fridge.forEach((String, Item) -> Item.save(printWriter));
+//        for (Map.Entry<String, String> entry : fridge.entrySet()){
+//            entry.save(printWriter);
+//        }
     }
 
 

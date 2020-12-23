@@ -8,9 +8,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.*;
+
 import static org.omg.CORBA.ORB.init;
 
 // App that runs the console of the Minifridge app
@@ -19,8 +22,11 @@ public class FridgeApp {
     public NutritionHttpRequest nutritionHttpRequest;
     public RecipeHttpRequest recipeHttpRequest;
     static MiniFridge fridge;
-    private Scanner input;
+    private final Scanner input;
     double amount;
+    String expiryDate;
+    Object valueExpiry;
+    private Object value;
 
 
     // EFFECTS: runs the fridge application
@@ -55,7 +61,32 @@ public class FridgeApp {
                 runRecipes();
             } else if (option == 6) {
                 keepRunning = false;
+            } else if (option == 7){
+                itemExpired();
             }
+        }
+    }
+
+    //TODO: for loop to check every expiry date on each item in fridge
+    public void itemExpired(){
+        String currentDate = LocalDate.now().toString();
+
+        for (Map.Entry mapElement : fridge.getFridge().entrySet()){
+
+            Item valueExpiry = (Item) mapElement.getValue();
+            String itemExpiryDate = valueExpiry.getExpiryDate();
+            if (itemExpiryDate == currentDate){
+                runExpired(mapElement);
+            }
+        }
+    }
+
+
+    public void runExpired(Map.Entry mapElement){
+        try{
+            ExpiredHttpRequest(mapElement);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -64,10 +95,13 @@ public class FridgeApp {
         Scanner in = new Scanner(System.in);
         System.out.println("Please input the name of your item");
         String foodName = in.nextLine();
-        Calendar calendar = Calendar.getInstance();
+        System.out.println("Please enter the expiry date in the form yyyy-MM-dd");
+        expiryDate = in.nextLine();
+        //Calendar calendar = Calendar.getInstance();
         //https://stackoverflow.com/questions/12575990/calendar-date-to-yyyy-mm-dd-format-in-java
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        Item item = new Item(foodName, format1.format(calendar.getTime()));
+        //SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        //Item item = new Item(foodName, format1.format(calendar.getTime()));
+        Item item = new Item(foodName,expiryDate);
         if (!fridge.containsItem(foodName)) {
             fridge.addFoodItem(item);
             saveFridge();
@@ -165,5 +199,6 @@ public class FridgeApp {
         System.out.println("4.Check if the fridge contains a food item already");
         System.out.println("5.Input an ingredient to find a recipe");
         System.out.println("6.Quit");
+        System.out.println("7.Run Expiry");
     }
 }

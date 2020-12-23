@@ -23,10 +23,12 @@ public class GUIview {
 //            frame3.add(output);
 //        }
         AtomicInteger addLength = new AtomicInteger(5);
-        newFridge.forEach((String, Item) -> {
-            JLabel output = new JLabel(Item.getItemName() + " " + Item.getDatePurchased());
-            output.setBounds(200, addLength.addAndGet(50), 200, 100);
-            frame3.add(output);
-        });
+////        newFridge.forEach((String, Item) -> {
+//        for (Map.Entry<String, String> entry : newFridge.entrySet()) {
+//            JLabel output = new JLabel(Item.getItemName() + " " + Item.getExpiryDate());
+//            output.setBounds(200, addLength.addAndGet(50), 200, 100);
+//            frame3.add(output);
+//        }
+        //});
     }
 }

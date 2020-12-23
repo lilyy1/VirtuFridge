@@ -1,7 +1,7 @@
 package model;
 
 import org.junit.jupiter.api.Test;
-import java.util.Calendar;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MiniFridgeTest {
@@ -31,7 +31,7 @@ class MiniFridgeTest {
     @Test
     void testItem() {
         assertEquals("Apple",apple.getItemName());
-        assertEquals(apple.getDatePurchased(), "2019-07-12");
+        assertEquals(apple.getExpiryDate(), "2019-07-12");
     }
 
     @Test
